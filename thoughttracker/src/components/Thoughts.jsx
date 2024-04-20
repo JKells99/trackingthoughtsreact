@@ -9,29 +9,33 @@ const Thoughts = ({ thoughts }) => {
     <div>
       <h1>List Of Thoughts:</h1>
       {thoughts.map((thought, index) => (
-        <Card>
-          <CardContent>
-            <Typography>ID: {thought.id}</Typography>
+         <Card key={index} variant="outlined" className="thought-card">
+         <CardContent>
+           <Typography variant="h4" className="thought-item">
+           <strong>Time Of Day:</strong> {thought.timeOfDay}
+           </Typography>
 
-            <Typography>Time of Day: {thought.timeOfDay}</Typography>
+           <Typography variant="h6" className="thought-item">
+           <strong>Current Situation:</strong> {thought.currentSituation}
+           </Typography>
 
-            <Typography>
-              Current Situation: {thought.currentSituation}
-            </Typography>
+           <Typography variant="h6" className="thought-item">
+             <strong>Mood:</strong> {thought.mood}
+           </Typography>
 
-            <Typography>Mood:{thought.mood}</Typography>
+           <Typography variant="h6" className="thought-item">
+           <strong>Mood Intensity:</strong> {thought.moodIntensity}
+           </Typography>
 
-            <Typography> Mood Intensity:{thought.moodIntensity}</Typography>
+           <Typography variant="h6" className="thought-item">
+           <strong>Thinking Error Type:</strong> {thought.thinkingErrorType}
+           </Typography>
 
-            <Typography>
-              Thinking Error Type:{thought.thinkingErrorType}
-            </Typography>
-
-            <Typography>
-              Automatic Thought:{thought.automaticThought}
-            </Typography>
-          </CardContent>
-        </Card>
+           <Typography variant="h6" className="thought-item">
+           <strong>Automatic Thought:</strong> {thought.automaticThought}
+           </Typography>
+         </CardContent>
+       </Card>
       ))}
     </div>
 
