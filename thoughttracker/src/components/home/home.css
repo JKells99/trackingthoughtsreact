@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+
+}
+
+
+
+.homeWrapper {
+    position: relative; /* Set the position of the container to relative */
+  }
+  
+  .homeWrapper img {
+    width: 100%; /* Make the image fill the container */
+    height: 100%; /* Maintain aspect ratio */
+    display: block; /* Ensure proper rendering */
+  }
+  
+  .homeWrapper .textContainer {
+    position: absolute; /* Position the text container absolutely */
+    bottom: 20px; /* Adjust the distance from the bottom */
+    left: 20px; /* Adjust the distance from the left */
+    right: 20px; /* Adjust the distance from the right */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px; /* Add padding */
+    border-radius: 8px; /* Add border radius */
+  }
+  
+  /* Define styles for Typography components */
+  .homeWrapper .textContainer h4 {
+    margin-bottom: 10px; /* Adjust margin for h4 Typography component */
+  }
+  
+  .homeWrapper .textContainer p {
+    margin-bottom: 10px; /* Adjust margin for body1 Typography component */
+  }

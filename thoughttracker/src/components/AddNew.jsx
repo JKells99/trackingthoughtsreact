@@ -6,7 +6,7 @@ import {  useState } from "react";
 import React from "react";
 
 
-const AddNew = () => {
+const AddNew = ({fetchThoughts}) => {
 
     const [formData, setFormData] = useState({
         timeOfDay: '',
@@ -14,6 +14,7 @@ const AddNew = () => {
         mood: '',
         moodIntensity: '',
         thinkingErrorType: '',
+        automaticThought:''
        
 
 
@@ -23,12 +24,14 @@ const AddNew = () => {
       
         try {
           await axios.post("http://localhost:8080/allthoughts/post", formData);
+          fetchThoughts();
           setFormData({
             timeOfDay: '',
             currentSituation: '',
             mood: '',
             moodIntensity: '',
             thinkingErrorType: '',
+            automaticThought: ''
           })
           console.log('Form data submitted:', formData);
           // Optionally, you can perform additional actions after successful form submission

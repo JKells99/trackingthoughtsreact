@@ -12,19 +12,22 @@ function App() {
 
   const [thoughts, setThoughts] = useState();
 
+  const fetchThoughts = async () => {
+    try {
+      const response = await axios.get(baseUrl);
+      setThoughts(response.data);
+    } catch (error) {
+      // Handle error if needed
+      console.error("Error fetching thoughts:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchThoughts = async () => {
-      try {
-        const response = await axios.get(baseUrl);
-        setThoughts(response.data);
-      } catch (error) {
-        // Handle error if needed
-        console.error("Error fetching thoughts:", error);
-      }
-    };
 
     fetchThoughts();
   }, []);
+
+
   return (
     <div className="App">
       <Routes>
@@ -39,7 +42,7 @@ function App() {
 
         <Route
           path="/addNew"
-          element={<AddNew />}
+          element={<AddNew fetchThoughts = {fetchThoughts}/>}
         ></Route>
       </Routes>
     </div>
