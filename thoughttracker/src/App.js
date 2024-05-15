@@ -1,49 +1,72 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Routes,
+} from "react-router-dom";
 import axios from "axios";
 import Thoughts from "./components/Thoughts";
 import AddNew from "./components/AddNew";
 import Home from "./components/Home";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./components/Login";
 
 function App() {
   const baseUrl = "http://localhost:8080/allthoughts";
 
   const [thoughts, setThoughts] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+ 
 
   const fetchThoughts = async () => {
     try {
       const response = await axios.get(baseUrl);
       setThoughts(response.data);
     } catch (error) {
-      // Handle error if needed
+      
       console.error("Error fetching thoughts:", error);
     }
   };
 
-  useEffect(() => {
+  const  handleLogin = () => {
+    setIsAuthenticated(true);
+  };
 
+  useEffect(() => {
     fetchThoughts();
   }, []);
-
 
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />}>
-          {" "}
-        </Route>
+        <Route path="/" element={<Login onLogin={handleLogin} />} />
+        {isAuthenticated && (
+          <Route
+            path="/thoughts"
+            element={<Thoughts thoughts={thoughts} />}
+          />
+        )}
 
-        <Route
-          path="/thoughts"
-          element={<Thoughts thoughts={thoughts} />}
-        ></Route>
-
-        <Route
+        {/* Route for adding new thought (protected by authentication) */}
+        {isAuthenticated && (
+          <Route
+            path="/addNew"
+            element={<AddNew />}
+          />
+        )}
+        {/* <ProtectedRoute
           path="/addNew"
-          element={<AddNew fetchThoughts = {fetchThoughts}/>}
-        ></Route>
+          element={<AddNew />}
+          isAuthenticated={isAuthenticated}
+        />
+        <ProtectedRoute
+          path="/thoughts"
+          element={<Thoughts />}
+          isAuthenticated={isAuthenticated}
+        /> */}
       </Routes>
     </div>
   );
