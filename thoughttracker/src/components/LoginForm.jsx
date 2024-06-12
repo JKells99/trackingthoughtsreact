@@ -18,8 +18,10 @@ const LoginForm = ({ onLogin }) => {
               password
             });
 
-            if (response.status === 200 ) {
+            if (response.status === 200 && response.data.token) {
                 setSuccess("Login Good To Go ")
+                localStorage.setItem('authToken', response.data.token)
+                console.log(response)
               onLogin();
               
             } else {

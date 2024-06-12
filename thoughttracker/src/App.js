@@ -19,6 +19,7 @@ function App() {
 
   const [thoughts, setThoughts] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // State to handle loading
  
 
   const fetchThoughts = async () => {
@@ -36,8 +37,52 @@ function App() {
   };
 
   useEffect(() => {
-    fetchThoughts();
+    const token = localStorage.getItem("authToken");
+
+    if (token) {
+      console.log("Token found in localStorage:", token);
+
+      // Send a request to the server to verify the token's validity
+      axios.post("http://localhost:8080/auth/verify", { token })
+        .then((response) => {
+          console.log("Token verification response:", response);
+
+          // If token is valid, set isAuthenticated to true
+          if (response.status === 200) {
+            console.log("Token is valid.");
+            setIsAuthenticated(true);
+          } else {
+            console.log("Token verification failed with status:", response.status);
+            setIsAuthenticated(false);
+            localStorage.removeItem("authToken"); // Optionally remove invalid token
+          }
+        })
+        .catch((error) => {
+          console.error("Error verifying token:", error);
+          if (error.response && error.response.status === 401) {
+            console.log("Token is invalid or expired.");
+            setIsAuthenticated(false);
+            localStorage.removeItem("authToken"); // Remove invalid token
+          } else {
+            // Handle other potential errors like network issues
+            console.log("Unexpected error during token verification:", error);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false); // Set loading to false after verification attempt
+        });
+    } else {
+      console.log("No token found in localStorage.");
+      setIsLoading(false); // No token to verify, end loading
+    }
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchThoughts(); // Fetch thoughts only if authenticated
+    }
+  }, [isAuthenticated]);
+
 
   return (
     <div className="App">
